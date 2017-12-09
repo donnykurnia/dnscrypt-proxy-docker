@@ -47,7 +47,7 @@ RUN set -x && \
     env CPPFLAGS=-I/opt/libsodium/include LDFLAGS=-L/opt/libsodium/lib \
         ./configure --disable-dependency-tracking --prefix=/opt/dnscrypt-proxy --disable-plugins && \
     make install && \
-    rm -fr /opt/dnscrypt-proxy/share && \
+    # rm -fr /opt/dnscrypt-proxy/share && \
     rm -fr /tmp/* /var/tmp/*
 
 RUN set -x && \
@@ -57,9 +57,8 @@ RUN set -x && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV LISTEN_ADDR 0.0.0.0:53
-ENV RESOLVER_ADDR 176.56.237.171:443
-ENV PROVIDER_NAME 2.dnscrypt-cert.resolver1.dnscrypt.eu
-ENV PROVIDER_KEY 67C0:0F2C:21C5:5481:45DD:7CB4:6A27:1AF2:EB96:9931:40A3:09B6:2B8D:1653:1185:9C66 
+ENV RESOLVER_NAME dnscrypt.eu-dk
+ENV RESOLVER_LIST /opt/dnscrypt-proxy/share/dnscrypt-proxy/dnscrypt-resolvers.csv
 ENV LOGLEVEL 6
 ENV EDNS_PAYLOAD_SIZE 1252
 
@@ -68,9 +67,8 @@ EXPOSE 53/tcp 53/udp
 CMD /opt/dnscrypt-proxy/sbin/dnscrypt-proxy \
                    --user=_dnscrypt-proxy \
                    --local-address=$LISTEN_ADDR \
-                   --provider-name=$PROVIDER_NAME \
-                   --provider-key=$PROVIDER_KEY \
-                   --resolver-address=$RESOLVER_ADDR \
+                   --resolver-name=$RESOLVER_NAME \
+                   --resolvers-list=$RESOLVER_LIST \
                    --loglevel=$LOGLEVEL \
                    --edns-payload-size=$EDNS_PAYLOAD_SIZE \
                    --ephemeral-keys \
