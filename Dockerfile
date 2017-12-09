@@ -1,5 +1,6 @@
 FROM debian:8
 MAINTAINER dnscrypt.io
+LABEL maintainer donnykurnia@gmail.com
 
 ENV BUILD_DEPENDENCIES \
     autoconf \
